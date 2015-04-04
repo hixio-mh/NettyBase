@@ -2,13 +2,11 @@ package org.pavelsumarokov.netty;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 import java.net.InetSocketAddress;
-import io.netty.channel.socket.SocketChannel;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +27,8 @@ public class BaseServer {
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             ServerBootstrap b = new ServerBootstrap();
-            setAddressAndHandler(b.group(group).channel(NioServerSocketChannel.class));
+            b = b.group(group).channel(NioServerSocketChannel.class);
+            setAddressAndHandler(b);
             bindAndCloseSynchronously(b);
         } finally {
             group.shutdownGracefully().sync();
@@ -38,12 +37,7 @@ public class BaseServer {
 
     private void setAddressAndHandler(final ServerBootstrap b) {
         b.localAddress(new InetSocketAddress(this.port))
-            .childHandler(new ChannelInitializer<SocketChannel>() {
-                @Override
-                public void initChannel(SocketChannel ch) throws Exception {
-                    ch.pipeline().addLast(new BaseServerHandler());
-                }
-            });
+            .childHandler(new HttpChannelInitializer());
     }
 
     private void bindAndCloseSynchronously(final ServerBootstrap b) throws InterruptedException {

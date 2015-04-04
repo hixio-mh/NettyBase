@@ -12,6 +12,8 @@ import io.netty.handler.codec.http.HttpServerCodec;
  * and encoder for HTTP response included into Server Codec.
  *
  * Adds Aggregator to receive only full HTTP requests.
+ *
+ * Adds our handler for http requests.
  */
 public class HttpChannelInitializer extends ChannelInitializer<Channel> {
 
@@ -22,5 +24,6 @@ public class HttpChannelInitializer extends ChannelInitializer<Channel> {
         ChannelPipeline pipeline = channel.pipeline();
         pipeline.addLast("codec", new HttpServerCodec());
         pipeline.addLast("aggregator", new HttpObjectAggregator(MAX_CONTENT_LENGTH));
+        pipeline.addLast("handler", new HttpServerHandler());
     }
 }
