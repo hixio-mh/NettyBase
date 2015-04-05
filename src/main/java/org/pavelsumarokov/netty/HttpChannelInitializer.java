@@ -24,6 +24,6 @@ public class HttpChannelInitializer extends ChannelInitializer<Channel> {
         ChannelPipeline pipeline = channel.pipeline();
         pipeline.addLast("codec", new HttpServerCodec());
         pipeline.addLast("aggregator", new HttpObjectAggregator(MAX_CONTENT_LENGTH));
-        pipeline.addLast("handler", new HttpServerHandler());
+        pipeline.addLast("handler", new HttpBaseServerHandler());
     }
 }

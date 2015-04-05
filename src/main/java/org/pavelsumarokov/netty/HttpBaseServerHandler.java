@@ -18,17 +18,11 @@ import static io.netty.handler.codec.http.HttpHeaders.Names.*;
 /**
  * Handler encapsulates BaseServer logic
  */
-public class HttpServerHandler extends SimpleChannelInboundHandler<Object> {
+public class HttpBaseServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Override
-    public void channelRead0(ChannelHandlerContext context, Object msg) {
-        if (!(msg instanceof FullHttpRequest)) {
-            log.warn("Incomplete message: {}", msg);
-            return;
-        }
-
-        FullHttpRequest request = (FullHttpRequest) msg;
+    public void channelRead0(ChannelHandlerContext context, FullHttpRequest request) {
         log.info("HTTP Request to: {}", request.getUri());
         writeResponse(request, context);
     }
