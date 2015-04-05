@@ -24,20 +24,16 @@ public class HttpBaseServerHandler extends SimpleChannelInboundHandler<FullHttpR
     @Override
     public void channelRead0(ChannelHandlerContext context, FullHttpRequest request) {
         log.info("HTTP Request to: {}", request.getUri());
-        writeResponse(request, context);
-    }
-
-    @Override
-    public void exceptionCaught(ChannelHandlerContext context, Throwable cause) {
-        log.error("Exception caught: {}", cause.getMessage());
-    }
-
-    private void writeResponse(FullHttpRequest request, ChannelHandlerContext context) {
         StringBuffer buffer = new StringBuffer();
         appendGreeting(buffer, request);
         appendHeaders(buffer, request);
         context.write(composeResponse(buffer));
         context.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext context, Throwable cause) {
+        log.error("Exception caught: {}", cause.getMessage());
     }
 
     private void appendGreeting(final StringBuffer buffer, final FullHttpRequest request) {
