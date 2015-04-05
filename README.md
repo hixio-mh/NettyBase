@@ -18,6 +18,7 @@ Backlog
 --------
 - Support SSL
 - Implement routing
+- Configure Spring IoC
 - Add basic business logic: {word: number of occurrences}
 - Integrate with Redis
 - Implement Web client in AngularJS
