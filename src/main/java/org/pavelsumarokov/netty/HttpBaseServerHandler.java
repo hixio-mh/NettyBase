@@ -24,11 +24,11 @@ public class HttpBaseServerHandler
     // TODO: use automatic marshalling from domain objects
     private static final String UNKNOWN_URI = "{\"status\": \"error\", \"cause\": \"Unknown Uri\"}";
 
-    private BaseRouter router;
+    private HttpRouter router;
 
     private ChannelHandlerContext context;
 
-    public HttpBaseServerHandler(final BaseRouter router) {
+    public HttpBaseServerHandler(final HttpRouter router) {
         this.router = router;
     }
 

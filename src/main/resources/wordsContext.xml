@@ -18,6 +18,14 @@
         <constructor-arg name="router" ref="router"/>
     </bean>
 
-    <bean id="router" class="org.pavelsumarokov.words.WordsRouter"/>
+    <bean id="router" class="org.pavelsumarokov.netty.HttpRouter">
+        <constructor-arg name="controllers">
+            <map>
+                <entry key="/word" value-ref="wordController"/>
+            </map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="wordController" class="org.pavelsumarokov.words.WordController"/>
 
 </beans>

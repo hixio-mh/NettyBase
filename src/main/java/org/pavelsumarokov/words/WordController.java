@@ -5,7 +5,7 @@ import org.pavelsumarokov.netty.RestApiController;
 /**
  * Sample HTTP REST API Controller
  */
-public class WordsController extends RestApiController {
+public class WordController extends RestApiController {
 
     public void get(String json) {
         this.respond("{\"id\": 1, \"value\": \"dictionary\"}");
@@ -16,10 +16,6 @@ public class WordsController extends RestApiController {
     }
 
     public void put(String json) {
-        this.respond("{\"id\": 1}");
-    }
-
-    public void delete(String json) {
         this.respond("{\"id\": 1}");
     }
 }
