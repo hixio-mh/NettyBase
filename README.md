@@ -2,10 +2,15 @@ NettyBase
 =========
 Basic Netty server for fast kick off
 
+Requirements
+---------
+JDK 7
+Apache Maven 3
+
 Running from CLI
 ---------
     mvn clean package
-    java -jar target/netty-base-1.0.2-SNAPSHOT.jar 8080
+    java -jar target/netty-base-0.0.3-SNAPSHOT.jar
 
 Features
 --------
@@ -21,6 +26,7 @@ Backlog
 - Support regular expressions for routing
 - Add basic business logic: {word: number of occurrences}
 - Integrate with Database
+- Write unit tests for routing and handlers
 - Implement Web client in AngularJS
 - Implement iOS client
 

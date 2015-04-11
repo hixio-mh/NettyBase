@@ -5,7 +5,7 @@ import java.util.Map;
 /**
  * Defines routes for HTTP REST API.
  */
-public class HttpRouter {
+class HttpRouter {
 
     private final Map<String, RestApiController> controllers;
 

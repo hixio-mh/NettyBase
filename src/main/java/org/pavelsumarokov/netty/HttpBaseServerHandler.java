@@ -24,7 +24,7 @@ public class HttpBaseServerHandler
     // TODO: use automatic marshalling from domain objects
     private static final String UNKNOWN_URI = "{\"status\": \"error\", \"cause\": \"Unknown Uri\"}";
 
-    private HttpRouter router;
+    private final HttpRouter router;
 
     private ChannelHandlerContext context;
 
@@ -55,10 +55,8 @@ public class HttpBaseServerHandler
     }
 
     public void respond(String json, HttpResponseStatus status) {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(json);
         FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, status,
-                Unpooled.copiedBuffer(buffer.toString(), CharsetUtil.UTF_8));
+                Unpooled.copiedBuffer(json, CharsetUtil.UTF_8));
         response.headers().set(CONTENT_TYPE, "application/json; charset=UTF-8");
 
         context.write(response);
