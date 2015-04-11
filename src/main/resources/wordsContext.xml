@@ -4,6 +4,14 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <bean id="router" class="org.pavelsumarokov.netty.HttpRouter">
+        <constructor-arg name="controllers">
+            <map>
+                <entry key="/word" value-ref="wordController"/>
+            </map>
+        </constructor-arg>
+    </bean>
+
     <bean id="baseServer" class="org.pavelsumarokov.netty.BaseServer">
         <constructor-arg name="port" value="8080"/>
         <constructor-arg name="channelInitializer" ref="channelInitializer"/>
@@ -16,14 +24,6 @@
     <bean id="channelHandler" class="org.pavelsumarokov.netty.HttpBaseServerHandler"
           scope="prototype">
         <constructor-arg name="router" ref="router"/>
-    </bean>
-
-    <bean id="router" class="org.pavelsumarokov.netty.HttpRouter">
-        <constructor-arg name="controllers">
-            <map>
-                <entry key="/word" value-ref="wordController"/>
-            </map>
-        </constructor-arg>
     </bean>
 
     <bean id="wordController" class="org.pavelsumarokov.words.WordController"/>

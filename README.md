@@ -25,7 +25,7 @@ Backlog
 - Support SSL
 - Support regular expressions for routing
 - Add basic business logic: {word: number of occurrences}
-- Integrate with Database
+- Integrate with MongoDB via Async Driver for Java
 - Write unit tests for routing and handlers
 - Implement Web client in AngularJS
 - Implement iOS client
@@ -35,3 +35,4 @@ Links
 - http://netty.io/wiki/
 - Handling HTTP: http://netty.io/4.0/xref/io/netty/example/http/snoop/package-summary.html
 - Spring IoC http://docs.spring.io/spring/docs/current/spring-framework-reference/html/beans.html
+- MongoDB Async Driver http://mongodb.github.io/mongo-java-driver/3.0/driver-async/
