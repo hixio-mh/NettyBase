@@ -9,26 +9,31 @@ import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Map;
-
 import static io.netty.handler.codec.http.HttpVersion.*;
-import static io.netty.handler.codec.http.HttpResponseStatus.*;
 import static io.netty.handler.codec.http.HttpHeaders.Names.*;
 
 /**
  * Handler encapsulates BaseServer logic
  */
-public class HttpBaseServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
+public class HttpBaseServerHandler
+        extends SimpleChannelInboundHandler<FullHttpRequest> implements Responder {
+
     private final Logger log = LoggerFactory.getLogger(getClass());
+
+    private final BaseRouter router;
+
+    private ChannelHandlerContext context;
+
+    public HttpBaseServerHandler() {
+        this.router = new BaseRouter();
+        this.router.setResponder(this);
+    }
 
     @Override
     public void channelRead0(ChannelHandlerContext context, FullHttpRequest request) {
         log.info("HTTP Request to: {}", request.getUri());
-        StringBuffer buffer = new StringBuffer();
-        appendGreeting(buffer, request);
-        appendHeaders(buffer, request);
-        context.write(composeResponse(buffer));
-        context.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
+        this.context = context;
+        router.routeRequest(request.getUri(), request.getMethod(), "{}");
     }
 
     @Override
@@ -36,28 +41,15 @@ public class HttpBaseServerHandler extends SimpleChannelInboundHandler<FullHttpR
         log.error("Exception caught: {}", cause.getMessage());
     }
 
-    private void appendGreeting(final StringBuffer buffer, final FullHttpRequest request) {
-        buffer.append("Welcome to Basic Netty Server.\r\n");
-        buffer.append("==============================\r\n");
-        buffer.append("REQUEST_URI: ").append(request.getUri()).append("\r\n\r\n");
-    }
-
-    private void appendHeaders(final StringBuffer buffer, final FullHttpRequest request) {
-        HttpHeaders headers = request.headers();
-        if (!headers.isEmpty()) {
-            for (Map.Entry<String, String> header: headers) {
-                String key = header.getKey();
-                String value = header.getValue();
-                buffer.append("HEADER: ").append(key).append(": ").append(value).append("\r\n");
-            }
-            buffer.append("\r\n");
-        }
-    }
-
-    private HttpResponse composeResponse(final StringBuffer buffer) {
-        FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, OK,
+    public void respond(String json, HttpResponseStatus status) {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(json);
+        FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, status,
                 Unpooled.copiedBuffer(buffer.toString(), CharsetUtil.UTF_8));
-        response.headers().set(CONTENT_TYPE, "text/plain; charset=UTF-8");
-        return response;
+        response.headers().set(CONTENT_TYPE, "application/json; charset=UTF-8");
+
+        context.write(response);
+        context.writeAndFlush(Unpooled.EMPTY_BUFFER).addListener(ChannelFutureListener.CLOSE);
+        context = null;
     }
 }
