@@ -8,10 +8,10 @@ import io.netty.handler.codec.http.*;
 import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import static io.netty.handler.codec.http.HttpVersion.*;
 import static io.netty.handler.codec.http.HttpHeaders.Names.*;
+import static io.netty.handler.codec.http.HttpResponseStatus.*;
 
 /**
  * Handler encapsulates BaseServer logic
@@ -21,20 +21,32 @@ public class HttpBaseServerHandler
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
+    // TODO: use automatic marshalling from domain objects
+    private static final String UNKNOWN_URI = "{\"status\": \"error\", \"cause\": \"Unknown Uri\"}";
+
     private BaseRouter router;
 
     private ChannelHandlerContext context;
 
     public HttpBaseServerHandler(final BaseRouter router) {
         this.router = router;
-        router.setResponder(this);
     }
 
     @Override
     public void channelRead0(ChannelHandlerContext context, FullHttpRequest request) {
         log.info("HTTP Request to: {}", request.getUri());
         this.context = context;
-        router.routeRequest(request.getUri(), request.getMethod(), "{}");
+        handleRequest(router.controllerForUri(request.getUri()), request);
+    }
+
+    private void handleRequest(final RestApiController controller, final FullHttpRequest request) {
+        if (null == controller) {
+            respond(UNKNOWN_URI, NOT_FOUND);
+        }
+        else {
+            controller.setResponder(this);
+            controller.callMethod(request.getMethod(), "{}");
+        }
     }
 
     @Override

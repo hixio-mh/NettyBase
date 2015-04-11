@@ -1,17 +1,17 @@
 package org.pavelsumarokov.words;
 
 import org.pavelsumarokov.netty.BaseRouter;
-import org.pavelsumarokov.netty.RestApiHandler;
+import org.pavelsumarokov.netty.RestApiController;
 
 /**
  * HTTP Router for Words Web App
  */
-public class WordsRouter extends BaseRouter {
+public class WordsRouter implements BaseRouter {
 
     // TODO: configure this using IoC
-    private final RestApiHandler onlyOneController = new WordsHandler();
+    private final RestApiController onlyOneController = new WordsController();
 
-    public RestApiHandler controllerForUri(final String uri) {
+    public RestApiController controllerForUri(final String uri) {
         return onlyOneController;
     }
 }
