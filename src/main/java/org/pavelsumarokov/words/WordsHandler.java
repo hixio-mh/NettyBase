@@ -1,11 +1,11 @@
 package org.pavelsumarokov.words;
 
-import org.pavelsumarokov.netty.RestApiController;
+import org.pavelsumarokov.netty.RestApiHandler;
 
 /**
- * Sample HTTP REST API Controller
+ * Sample HTTP REST API Handler
  */
-public class WordsController implements RestApiController {
+public class WordsHandler implements RestApiHandler {
 
     public String get(String json) {
         return "{\"id\": 1, \"value\": \"dictionary\"}";

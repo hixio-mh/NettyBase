@@ -1,9 +1,9 @@
 package org.pavelsumarokov.netty;
 
 /**
- * Declares REST API methods for non blocking controllers.
+ * Declares REST API methods for non blocking handlers.
  */
-public interface RestApiController {
+public interface RestApiHandler {
 
     String get(String json);
     String post(String json);

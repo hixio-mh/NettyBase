@@ -20,10 +20,10 @@ public abstract class BaseRouter {
         this.responder = responder;
     }
 
-    public abstract RestApiController controllerForUri(final String uri);
+    public abstract RestApiHandler controllerForUri(final String uri);
 
     public void routeRequest(final String uri, final HttpMethod method, final String json) {
-        RestApiController controller = controllerForUri(uri);
+        RestApiHandler controller = controllerForUri(uri);
 
         if (null == controller) {
             responder.respond(UNKNOWN_URI, NOT_FOUND);
@@ -33,7 +33,7 @@ public abstract class BaseRouter {
         responder.respond(result, OK);
     }
 
-    private String callMethod(final RestApiController controller,
+    private String callMethod(final RestApiHandler controller,
                               final HttpMethod method,
                               final String json) {
         if (POST == method) {
