@@ -20,13 +20,12 @@ public class HttpBaseServerHandler
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final BaseRouter router;
+    private BaseRouter router;
 
     private ChannelHandlerContext context;
 
-    public HttpBaseServerHandler() {
-        this.router = new BaseRouter();
-        this.router.setResponder(this);
+    public void setRouter(BaseRouter router) {
+        this.router = router;
     }
 
     @Override
