@@ -4,8 +4,8 @@ Basic Netty server for fast kick off
 
 Requirements
 ---------
-JDK 7
-Apache Maven 3
+- JDK 7
+- Apache Maven 3
 
 Running from CLI
 ---------
