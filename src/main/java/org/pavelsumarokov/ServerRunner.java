@@ -4,22 +4,18 @@ import org.pavelsumarokov.netty.BaseServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 public class ServerRunner {
     private static Logger log = LoggerFactory.getLogger(ServerRunner.class);
 
     public static void main(String[] args)
     {
-        if (args.length != 1) {
-            log.error("Usage: {} <port>", BaseServer.class.getSimpleName());
-            return;
-        }
-
-        startServerOnPort(Integer.parseInt(args[0]));
-    }
-
-    private static void startServerOnPort(int port) {
-        try {
-            new BaseServer(port).start();
+        try (ConfigurableApplicationContext context =
+                     new ClassPathXmlApplicationContext("wordsContext.xml")) {
+            BaseServer server = context.getBean("baseServer", BaseServer.class);
+            server.start();
         } catch (Exception e) {
             log.error(e.getMessage());
         }

@@ -8,6 +8,7 @@ import io.netty.handler.codec.http.*;
 import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import static io.netty.handler.codec.http.HttpVersion.*;
 import static io.netty.handler.codec.http.HttpHeaders.Names.*;
@@ -24,8 +25,9 @@ public class HttpBaseServerHandler
 
     private ChannelHandlerContext context;
 
-    public void setRouter(BaseRouter router) {
+    public HttpBaseServerHandler(final BaseRouter router) {
         this.router = router;
+        router.setResponder(this);
     }
 
     @Override

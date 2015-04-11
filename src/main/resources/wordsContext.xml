@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="baseServer" class="org.pavelsumarokov.netty.BaseServer">
+        <constructor-arg name="port" value="8080"/>
+        <constructor-arg name="channelInitializer" ref="channelInitializer"/>
+    </bean>
+
+    <bean id="channelInitializer" class="org.pavelsumarokov.netty.HttpChannelInitializer">
+        <lookup-method name="createHandler" bean="channelHandler"/>
+    </bean>
+
+    <bean id="channelHandler" class="org.pavelsumarokov.netty.HttpBaseServerHandler"
+          scope="prototype">
+        <constructor-arg name="router" ref="router"/>
+    </bean>
+
+    <bean id="router" class="org.pavelsumarokov.words.WordsRouter"/>
+
+</beans>
