@@ -10,7 +10,7 @@ import static io.netty.handler.codec.http.HttpResponseStatus.*;
 /**
  * Declares REST API methods for non blocking controllers.
  */
-class RestApiController {
+public class RestApiController {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
